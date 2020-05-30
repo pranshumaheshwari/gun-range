@@ -228,6 +228,8 @@ void replay();
 
 static int windowHeight = GLUT_SCREEN_HEIGHT;
 static int windowWidth = GLUT_SCREEN_WIDTH;
+const int menu_new_game = 1;
+const int menu_exit = 2;
 
 gameStatus gameStat("basic", 0);
 gameCamera gameCam(0, 0, 180, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
@@ -652,6 +654,21 @@ void Display() {
     glFlush();
 }
 
+void menuHandler(int option) {
+    if (option == menu_new_game) {
+        initGame();
+    } else {
+        endGame();
+    }
+}
+
+void createMenu() {
+    int menu_id = glutCreateMenu(menuHandler);
+    glutAddMenuEntry("New Game", menu_new_game);
+    glutAddMenuEntry("Exit", menu_exit);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);  
+}
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutCreateWindow("Gun Range");
@@ -676,6 +693,7 @@ int main(int argc, char** argv) {
     glShadeModel(GL_SMOOTH);
     glEnable(GL_TEXTURE_2D);
 
+    createMenu();
     initGame();
     glutMainLoop();
     return 0;
